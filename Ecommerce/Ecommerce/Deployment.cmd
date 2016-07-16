@@ -8,7 +8,7 @@ SET sqlPackageExe="%ProgramFiles(x86)%\Microsoft SQL Server\130\DAC\bin\SqlPacka
 IF EXIST "%ProgramFiles(x86)%\Microsoft SQL Server\120\DAC\bin\SqlPackage.exe" SET sqlPackageExe="%ProgramFiles(x86)%\Microsoft SQL Server\120\DAC\bin\SqlPackage.exe"
 
 ECHO SqlPackage path: %sqlPackageExe% 
-@%sqlPackageExe% /Action:publish /TargetConnectionString:"server=%1;Database=Ecommerce" /SourceFile:EKPub.dacpac 
+@%sqlPackageExe% /Action:publish /TargetConnectionString:"server=%1;Database=Ecommerce" /SourceFile:Ecommerce.dacpac 
 @GOTO :EOF
 :ELEVATE
 @echo "Please run this script with elevated privileges."
