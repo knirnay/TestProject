@@ -51,3 +51,7 @@ BEGIN
 	WHEN NOT MATCHED BY SOURCE 
 		THEN DELETE;
 END
+ELSE
+BEGIN;
+	THROW 50001, 'ProductCategory table missing.", 1
+END;
