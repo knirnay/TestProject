@@ -68,4 +68,9 @@
   <ItemGroup>
     <PostDeploy Include="Post\ProductCategory.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Deployment.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
