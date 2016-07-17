@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post\ProductCategory.sql" />
+    <None Include="Post\Script.PostDeployment1.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deployment.cmd">

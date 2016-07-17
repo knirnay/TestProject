@@ -4,8 +4,10 @@
 	CategoryId INT NOT NULL,
 	Name VARCHAR(100) NOT NULL,
 	ProductDescription VARCHAR(256) NOT NULL,
-	InsertDate DATETIME DEFAULT [DF_Product_InsertDate] (GETUTCDATE()),
+	InsertDate DATETIME CONSTRAINT [DF_Product_InsertDate] DEFAULT (GETUTCDATE()),
 	UpdateDate DATETIME NULL,
 	CONSTRAINT [PK_Product_ProductId] PRIMARY KEY CLUSTERED (ProductId),
 	CONSTRAINT [FK_Product_ProductCategory_CategoryId] FOREIGN KEY (CategoryId) REFERENCES dbo.ProductCategory(CategoryId) ON UPDATE CASCADE ON DELETE CASCADE
 )
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UIX_Product_Name] ON dbo.Product(Name ASC)

@@ -1,41 +1,41 @@
-﻿IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE NAME = N'ProductCategory')
+﻿IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ProductCategory')
 BEGIN
 	MERGE INTO dbo.ProductCategory AS TARGET
 	USING (
 		SELECT * FROM (
 			VALUES 
-				  ('Electronics & Computers', NULL)
-				, ('Books & Audible', NULL)
-				, ('Movies, Music & Games', NULL)
-				, ('Home, Garden & Tools', NULL)
-				, ('Beauty, Health & Grocery', NULL)
-				, ('Toys, Kids & Baby', NULL)
-				, ('Clothing, Shoes & Jewelry', NULL)
-				, ('Sports & Outdoors', NULL)
-				, ('Automotive & Industrial', NULL)
-				, ('Electornics', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))
-				, ('Computers', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electornics & Computers'))
-				, ('TV & Videos', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electornics'))
-				, ('Home Audio & Theater', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Camera, Photo & Video', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Cell Phones & Accessories', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Headphones', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Video Games', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Bluetooth & Wireless Speakers', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Car Electronics', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Musical Instruments', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Wearable Technology', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics'))
-				, ('Computers & Tablets', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-				, ('Monitors', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-				, ('Accessories', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-				, ('Networking', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-				, ('Drives & Storage', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-				, ('Computer Parts & Components', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-				, ('Software', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-				, ('Printers & Ink', (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Computers'))
-		) as dt (Name, ParentCategoryId)
+				  (1, 'Electronics & Computers', NULL)
+				, (2, 'Books & Audible', NULL)
+				, (3, 'Movies, Music & Games', NULL)
+				, (4, 'Home, Garden & Tools', NULL)
+				, (5, 'Beauty, Health & Grocery', NULL)
+				, (6, 'Toys, Kids & Baby', NULL)
+				, (7, 'Clothing, Shoes & Jewelry', NULL)
+				, (8, 'Sports & Outdoors', NULL)
+				, (9, 'Automotive & Industrial', NULL)
+				, (10, 'Electornics', 1)
+				, (11, 'Computers', 1)
+				, (12, 'TV & Videos', 10)
+				, (13, 'Home Audio & Theater', 10)
+				, (14, 'Camera, Photo & Video', 10)
+				, (15, 'Cell Phones & Accessories', 10)
+				, (16, 'Headphones', 10)
+				, (17, 'Video Games', 10)
+				, (18, 'Bluetooth & Wireless Speakers', 10)
+				, (19, 'Car Electronics', 10)
+				, (20, 'Musical Instruments', 10)
+				, (21, 'Wearable Technology', 10)
+				, (22, 'Computers & Tablets', 11)
+				, (23, 'Monitors', 11)
+				, (24, 'Accessories', 11)
+				, (25, 'Networking', 11)
+				, (26, 'Drives & Storage', 11)
+				, (27, 'Computer Parts & Components', 11)
+				, (28, 'Software', 11)
+				, (29, 'Printers & Ink', 11)
+		) as dt (CategoryId, Name, ParentCategoryId)
 	) AS SOURCE
-	ON TARGET.Name = SOURCE.Name
+	ON TARGET.Name = SOURCE.Name AND TARGET.CategoryId = SOURCE.CategoryId
 	WHEN MATCHED AND (
 						(TARGET.ParentCategoryId IS NOT NULL AND SOURCE.ParentCategoryId IS NOT NULL AND TARGET.ParentCategoryId != SOURCE.ParentCategoryId)
 						OR
@@ -46,12 +46,12 @@ BEGIN
 		THEN UPDATE SET TARGET.ParentCategoryId = SOURCE.ParentCategoryId, UpdateDate = GETUTCDATE()
 	WHEN NOT MATCHED BY TARGET 
 		THEN
-			INSERT (Name, ParentCategoryId)
-			VALUES (SOURCE.Name, SOURCE.ParentCategoryId)
+			INSERT (CategoryId, Name, ParentCategoryId)
+			VALUES (SOURCE.CategoryId, SOURCE.Name, SOURCE.ParentCategoryId)
 	WHEN NOT MATCHED BY SOURCE 
 		THEN DELETE;
 END
 ELSE
 BEGIN;
-	THROW 50001, 'ProductCategory table missing.", 1
+	THROW 50001, 'ProductCategory table missing.', 1
 END;
