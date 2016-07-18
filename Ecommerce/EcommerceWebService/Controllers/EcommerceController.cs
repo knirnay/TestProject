@@ -29,7 +29,7 @@ namespace EcommerceWebService.Controllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="HttpResponseException"></exception>
-        public List<ProductCategory> GetProductCategory()
+        public IEnumerable<ProductCategory> GetProductCategory()
         {
             try
             {
@@ -47,7 +47,7 @@ namespace EcommerceWebService.Controllers
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
         /// <exception cref="HttpResponseException"></exception>
-        public List<ProductCategory> GetProductCategory(int parentCategoryId)
+        public IEnumerable<ProductCategory> GetProductCategory(int parentCategoryId)
         {
             try
             {

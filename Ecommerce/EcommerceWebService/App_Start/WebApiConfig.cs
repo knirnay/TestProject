@@ -25,6 +25,7 @@ namespace EcommerceWebService
 
             var container = new UnityContainer();
             container.RegisterType<IDataAccess, EcommerceDataAccess>(new HierarchicalLifetimeManager(), new InjectionConstructor(Settings.Default.EcommerceConnectionsString));
+            config.DependencyResolver = new UnityResolver(container);
         }
     }
 }
