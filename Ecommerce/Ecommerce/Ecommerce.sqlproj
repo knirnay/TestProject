@@ -60,10 +60,14 @@
     <Folder Include="SchemaObject" />
     <Folder Include="SchemaObject\Tables" />
     <Folder Include="Post" />
+    <Folder Include="SchemaObject\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="SchemaObject\Tables\ProductCategory.sql" />
     <Build Include="SchemaObject\Tables\Product.sql" />
+    <Build Include="SchemaObject\Stored Procedures\SelectProductCategory.sql" />
+    <Build Include="SchemaObject\Stored Procedures\SelectProductCategoryByCategoryId.sql" />
+    <Build Include="SchemaObject\Stored Procedures\SelectProductCategoryByParentCategoryId.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post\ProductCategory.sql" />
