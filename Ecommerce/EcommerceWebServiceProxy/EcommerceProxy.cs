@@ -52,17 +52,17 @@ namespace EcommerceWebServiceProxy
         /// <summary>
         /// Gets the product category.
         /// </summary>
-        /// <param name="categoryId">The category identifier.</param>
+        /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
         /// <exception cref="HttpRequestException"></exception>
-        public async Task<List<ProductCategory>> GetProductCategory(int categoryId)
+        public async Task<List<ProductCategory>> GetProductCategory(int parentCategoryId)
         {
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(this.rootUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                using (HttpResponseMessage response = await client.GetAsync(string.Concat("api/Ecommerce/GetProductCategory/", categoryId)))
+                using (HttpResponseMessage response = await client.GetAsync(string.Concat("api/Ecommerce/GetProductCategory/", parentCategoryId)))
                 {
                     if (response.IsSuccessStatusCode)
                     {
