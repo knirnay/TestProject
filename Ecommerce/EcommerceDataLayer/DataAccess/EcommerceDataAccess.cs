@@ -56,7 +56,7 @@ namespace EcommerceDataLayer
         /// </summary>
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
-        public List<ProductCategory> GetProductCategory(int parentCategoryId)
+        public List<ProductCategory> GetProductCategory(int? parentCategoryId)
         {
             List<ProductCategory> productCategories = null;
             using (SqlConnection conn = new SqlConnection(this.connString))
@@ -65,7 +65,11 @@ namespace EcommerceDataLayer
             {
                 productCategory.Locale = CultureInfo.InvariantCulture;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@parentCategoryId", parentCategoryId);
+                if (parentCategoryId.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("@parentCategoryId", parentCategoryId);
+                }
+
                 using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                 {
                     da.Fill(productCategory);

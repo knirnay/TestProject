@@ -47,7 +47,7 @@ namespace EcommerceWebService.Controllers
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
         /// <exception cref="HttpResponseException"></exception>
-        public IEnumerable<ProductCategory> GetProductCategory(int parentCategoryId)
+        public IEnumerable<ProductCategory> GetProductCategoryByParentCategoryId(int? parentCategoryId)
         {
             try
             {

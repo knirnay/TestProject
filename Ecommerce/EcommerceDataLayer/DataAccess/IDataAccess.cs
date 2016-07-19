@@ -15,6 +15,6 @@ namespace EcommerceDataLayer
         /// </summary>
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
-        List<ProductCategory> GetProductCategory(int parentCategoryId);
+        List<ProductCategory> GetProductCategory(int? parentCategoryId);
     }
 }
