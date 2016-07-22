@@ -27,23 +27,6 @@ namespace EcommerceWebService.Controllers
         /// <summary>
         /// Gets the product category.
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="HttpResponseException"></exception>
-        public IEnumerable<ProductCategory> GetProductCategory()
-        {
-            try
-            {
-                return data.GetProductCategory();
-            }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
-            }
-        }
-
-        /// <summary>
-        /// Gets the product category.
-        /// </summary>
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
         /// <exception cref="HttpResponseException"></exception>
@@ -51,7 +34,7 @@ namespace EcommerceWebService.Controllers
         {
             try
             {
-                return data.GetProductCategory(parentCategoryId);
+                return data.GetProductCategoryByParentCategoryId(parentCategoryId);
             }
             catch (Exception ex)
             {

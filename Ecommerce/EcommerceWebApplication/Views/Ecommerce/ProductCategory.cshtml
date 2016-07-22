@@ -1,0 +1,44 @@
+﻿@using EcommerceDataLayer;
+@model IEnumerable<ProductCategory>
+
+@{
+    ViewBag.Title = "Product Category";
+}
+
+<h2>Product Category</h2>
+
+<div>
+    <h4>ProductCategory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @foreach (ProductCategory productCategory in Model)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </dt>
+
+            <dd>
+                @productCategory.CategoryId
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @if (productCategory.HasChild)
+                {
+                    @Html.ActionLink(productCategory.Name, "ProductCategory", new { parentCategoryId = productCategory.CategoryId })
+                }
+                else
+                {
+                    @productCategory.Name
+                }
+            </dd>
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "ProductCategory", new { parentCategoryId = (int?)null })
+</p>

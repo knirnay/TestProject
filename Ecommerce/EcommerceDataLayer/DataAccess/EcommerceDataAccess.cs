@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -23,42 +24,13 @@ namespace EcommerceDataLayer
         private string connString;
 
         /// <summary>
-        /// Gets the product category.
-        /// </summary>
-        /// <returns></returns>
-        public List<ProductCategory> GetProductCategory()
-        {
-            List<ProductCategory> productCategories = null;
-            using (SqlConnection conn = new SqlConnection(this.connString))
-            using (SqlCommand cmd = new SqlCommand("dbo.SelectProductCategory", conn))
-            using (DataTable productCategory = new DataTable())
-            {
-                productCategory.Locale = CultureInfo.InvariantCulture;
-                cmd.CommandType = CommandType.StoredProcedure;
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                {
-                    da.Fill(productCategory);
-                }
-
-                productCategories = productCategory.AsEnumerable().Select(row =>
-                new ProductCategory
-                {
-                    CategoryId = row.Field<int>("CategoryId"),
-                    Name = row.Field<string>("Name")
-                }).ToList();
-            }
-
-            return productCategories;
-        }
-
-        /// <summary>
         /// Gets the product category by parent category identifier.
         /// </summary>
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
-        public List<ProductCategory> GetProductCategory(int? parentCategoryId)
+        public IEnumerable<ProductCategory> GetProductCategoryByParentCategoryId(int? parentCategoryId)
         {
-            List<ProductCategory> productCategories = null;
+            IEnumerable<ProductCategory> productCategories = null;
             using (SqlConnection conn = new SqlConnection(this.connString))
             using (SqlCommand cmd = new SqlCommand("dbo.SelectProductCategoryByParentCategoryId", conn))
             using (DataTable productCategory = new DataTable())
@@ -79,8 +51,43 @@ namespace EcommerceDataLayer
                 new ProductCategory
                 {
                     CategoryId = row.Field<int>("CategoryId"),
-                    Name = row.Field<string>("Name")
+                    Name = row.Field<string>("Name"),
+                    ParentCategoryId = row.Field<int?>("ParentCategoryId"),
+                    HasChild = Convert.ToBoolean(row.Field<int>("HasChild"))
                 }).ToList();
+            }
+
+            return productCategories;
+        }
+
+        /// <summary>
+        /// Gets the product category by category identifier.
+        /// </summary>
+        /// <param name="categoryId">The category identifier.</param>
+        /// <returns></returns>
+        public IEnumerable<ProductCategory> GetProductCategoryByCategoryId(int categoryId)
+        {
+            IEnumerable<ProductCategory> productCategories = null;
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            using (SqlCommand cmd = new SqlCommand("SelectProductCategoryByCategoryId", conn))
+            using (DataTable productCategory = new DataTable())
+            {
+                productCategory.Locale = CultureInfo.InvariantCulture;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(productCategory);
+                }
+
+                productCategories = productCategory.AsEnumerable().Select(row =>
+                new ProductCategory
+                {
+                    CategoryId = row.Field<int>("CategoryId"),
+                    Name = row.Field<string>("Name"),
+                    ParentCategoryId = row.Field<int?>("ParentCategoryId"),
+                    HasChild = Convert.ToBoolean(row.Field<int>("HasChild"))
+                });
             }
 
             return productCategories;

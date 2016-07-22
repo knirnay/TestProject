@@ -16,25 +16,15 @@ namespace EcommerceUnitTest
             this.proxy = new EcommerceProxy(Settings.Default.EcommerceWebServiceRootUri);
         }
 
-        private EcommerceProxy proxy;
-
-        [TestMethod]
-        public void GetAllProductCategory()
-        {
-            List<ProductCategory> productCategories = this.proxy.GetProductCategory().Result;
-            foreach (ProductCategory productCategory in productCategories)
-            {
-                Trace.WriteLine(string.Format("CategoryId: {0}, Name: {1}", productCategory.CategoryId, productCategory.Name));
-            }
-        }
+        private IProxy proxy;
 
         [TestMethod]
         public void GetProductCategoryByCategoryId()
         {
-            List<ProductCategory> productCategories = this.proxy.GetProductCategoryByParentCategoryId(null).Result;
+            IEnumerable<ProductCategory> productCategories = this.proxy.GetProductCategoryByParentCategoryId(null).Result;
             foreach (ProductCategory productCategory in productCategories)
             {
-                Trace.WriteLine(string.Format("CategoryId: {0}, Name: {1}", productCategory.CategoryId, productCategory.Name));
+                Trace.WriteLine(string.Format("CategoryId: {0}, Name: {1}, ParentCategoryId:{2}, HasChild: {3}", productCategory.CategoryId, productCategory.Name, productCategory.ParentCategoryId, productCategory.HasChild));
             }
         }
     }

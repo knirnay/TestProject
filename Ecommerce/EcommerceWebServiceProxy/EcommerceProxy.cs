@@ -7,7 +7,7 @@ using EcommerceDataLayer;
 
 namespace EcommerceWebServiceProxy
 {
-    public class EcommerceProxy
+    public class EcommerceProxy : IProxy
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EcommerceProxy"/> class.
@@ -26,36 +26,10 @@ namespace EcommerceWebServiceProxy
         /// <summary>
         /// Gets the product category.
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="HttpRequestException"></exception>
-        public async Task<List<ProductCategory>> GetProductCategory()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(this.rootUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                using (HttpResponseMessage response = await client.GetAsync("api/Ecommerce/GetProductCategory"))
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return await response.Content.ReadAsAsync<List<ProductCategory>>();
-                    }
-                    else
-                    {
-                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the product category.
-        /// </summary>
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
         /// <exception cref="HttpRequestException"></exception>
-        public async Task<List<ProductCategory>> GetProductCategoryByParentCategoryId(int? parentCategoryId)
+        public async Task<IEnumerable<ProductCategory>> GetProductCategoryByParentCategoryId(int? parentCategoryId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -66,7 +40,7 @@ namespace EcommerceWebServiceProxy
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        return await response.Content.ReadAsAsync<List<ProductCategory>>();
+                        return await response.Content.ReadAsAsync<IEnumerable<ProductCategory>>();
                     }
                     else
                     {

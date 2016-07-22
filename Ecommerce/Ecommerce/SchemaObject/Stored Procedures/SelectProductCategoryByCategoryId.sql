@@ -8,12 +8,17 @@ BEGIN
 		THROW 50001, '@categoryId is null', 1
 	END
 
-	DECLARE @name VARCHAR(100)
-	SELECT @name = Name FROM dbo.ProductCategory WHERE CategoryId = @categoryId;
-	IF (@name IS NULL)
+	IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategory WHERE CategoryId = @CategoryId)
 	BEGIN;
 		THROW 50001, 'CategoryId does not exists', 1
 	END
-
-	SELECT @name AS Name;
+	
+	SELECT 
+		CategoryId, 
+		Name, 
+		ParentCategoryId, 
+		CASE WHEN EXISTS (SELECT 1 FROM dbo.ProductCategory AS P WHERE P.ParentCategoryId = PC.CategoryId) THEN 1 ELSE 0 END AS HasChild
+	FROM dbo.ProductCategory AS PC
+	WHERE 
+		PC.CategoryId = @categoryId
 END
