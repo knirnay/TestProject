@@ -14,7 +14,7 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategory WHERE ParentCategoryId = @parentCategoryId)
+		IF NOT EXISTS (SELECT 1 FROM dbo.ProductCategory WHERE ParentCategoryId = @parentCategoryId AND ParentCategoryId IS NOT NULL)
 		BEGIN;
 			THROW 50001, '@parentCategoryId does not exists', 1
 		END
@@ -23,7 +23,7 @@ BEGIN
 			PC.CategoryId, 
 			PC.Name,
 			PC.ParentCategoryId,
-			CASE WHEN EXISTS (SELECT 1 FROM dbo.ProductCategory AS P WHERE P.ParentCategoryId = PC.CategoryId) THEN 1 ELSE 0 END AS HasChild
-		FROM dbo.ProductCategory AS PC WHERE PC.ParentCategoryId = @parentCategoryId
+			CASE WHEN EXISTS (SELECT 1 FROM dbo.ProductCategory AS P WHERE P.ParentCategoryId = PC.CategoryId AND P.ParentCategoryId IS NOT NULL) THEN 1 ELSE 0 END AS HasChild
+		FROM dbo.ProductCategory AS PC WHERE PC.ParentCategoryId = @parentCategoryId AND PC.ParentCategoryId IS NOT NULL
 	END
 END

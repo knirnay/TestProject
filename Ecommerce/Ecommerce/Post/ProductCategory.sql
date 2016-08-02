@@ -13,7 +13,7 @@ BEGIN
 				, (7, 'Clothing, Shoes & Jewelry', NULL)
 				, (8, 'Sports & Outdoors', NULL)
 				, (9, 'Automotive & Industrial', NULL)
-				, (10, 'Electornics', 1)
+				, (10, 'Electronics', 1)
 				, (11, 'Computers', 1)
 				, (12, 'TV & Videos', 10)
 				, (13, 'Home Audio & Theater', 10)

@@ -11,5 +11,15 @@ Post-Deployment Script Template
 */
 GO
 :r ProductCategory.sql
+GO
+--
+GO
+:r Specification.sql
 
-GO;
+GO
+--
+GO
+:r SpecificationProductCategoryXref.sql
+GO
+--
+GO

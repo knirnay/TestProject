@@ -1,0 +1,107 @@
+﻿@using EcommerceDataLayer
+@model Product
+
+@{
+    ViewBag.Title = "CreateNewProduct";
+}
+
+<script type="text/javascript">
+    /* The function below fetches data for cascading drop-down list*/
+    function onDepartmentChange() {
+        var departmentEle = $("#ParentCategoryId");
+        var selectedDepartmentValue = departmentEle.val();
+        var selectedDepartmentText = $("#ParentCategoryId option:selected").text();
+        var categoryEle = $("#CategoryId");
+        $.ajax({
+            type: 'GET',
+            controller: 'Product',
+            url: '@Url.Action("GetCategory")',
+            dataType: 'json',
+            data: { parentCategoryId: selectedDepartmentValue },
+            success: function (categories) {
+                /* the line below is very important. It will remove the already fetched data and put the fresh data in the second drop down list.
+                if not emptied it will keep appending the results and eventually we will have wrong data.*/
+                categoryEle.html('');
+                categoryEle.html('<option>Select a category</option>');
+                $.each(categories, function (id, category) {
+                    categoryEle.append($('<option></option>').val(category.Value).html(category.Text));
+                });
+            },
+            error: function (ex) {
+                alert('Failed to retrieve categories' + ex);
+            }
+        });
+
+        var specificationAreaEle = document.getElementById("specArea");
+        if (specificationAreaEle.style.display == 'none') {
+            specificationAreaEle.style.display = 'block';
+        }
+
+        $("#specArea").load("@Url.Action("SpecificationPartialView", "Product")",
+        { baseCategoryId: selectedDepartmentValue, viewName: "CustomerDetails" });
+    }
+</script>
+<h2>CreateNewProduct</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Product</h4>
+        <hr />
+        <div class="form-group">
+            @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DepartmentList", new SelectList(Model.ProductCategories, "CategoryId", "Name"), "Select a department", new { @id = "ParentCategoryId", @onchange = "onDepartmentChange()" })
+                <!--Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { class = "form-control" } })-->
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CategoryId, new SelectList(string.Empty, "CategoryId", "Name"), "Select a category", new { @id = "CategoryId" })
+                <!--Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { class = "form-control" } })-->
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div id="specArea" style="display:none">
+            
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

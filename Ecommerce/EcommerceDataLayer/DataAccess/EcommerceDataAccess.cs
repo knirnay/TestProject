@@ -7,14 +7,30 @@ using System.Linq;
 
 namespace EcommerceDataLayer
 {
+    /// <summary>
+    /// Class EcommerceDataAccess.
+    /// </summary>
+    /// <seealso cref="EcommerceDataLayer.IDataAccess" />
     public class EcommerceDataAccess : IDataAccess
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EcommerceDataAccess"/> class.
+        /// Initializes a new instance of the <see cref="EcommerceDataAccess" /> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
+        /// <exception cref="ArgumentNullException">Value cannot be null.</exception>
+        /// <exception cref="ArgumentException">Value cannot be whitespace</exception>
         public EcommerceDataAccess(string connectionString)
         {
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException(nameof(connectionString), "Value cannot be null.");
+            }
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentException("Value cannot be whitespace", nameof(connectionString));
+            }
+
             this.connString = connectionString;
         }
 
@@ -91,6 +107,100 @@ namespace EcommerceDataLayer
             }
 
             return productCategories;
+        }
+
+
+        /// <summary>
+        /// Creates the new product with specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <returns>System.Int32.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// Value cannot be null.
+        /// or
+        /// Value cannot be null.
+        /// or
+        /// Value cannot be null.
+        /// or
+        /// Value cannot be null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Value cannot be whitespace
+        /// or
+        /// Value cannot be whitespace
+        /// </exception>
+        public int CreateNewProductWithSpecification(Product product)
+        {
+            if (product == null)
+            {
+                throw new ArgumentNullException(nameof(product), "Value cannot be null.");
+            }
+
+            if (product.Name == null)
+            {
+                throw new ArgumentNullException(nameof(product.Name), "Value cannot be null.");
+            }
+
+            if (product.Description == null)
+            {
+                throw new ArgumentNullException(nameof(product.Description), "Value cannot be null.");
+            }
+
+            if (product.Spec == null)
+            {
+                throw new ArgumentNullException(nameof(product.Spec), "Value cannot be null");
+            }
+
+            if (string.IsNullOrWhiteSpace(product.Name))
+            {
+                throw new ArgumentException("Value cannot be whitespace", nameof(product.Name));
+            }
+
+            if (string.IsNullOrWhiteSpace(product.Description))
+            {
+                throw new ArgumentException("Value cannot be whitespace", nameof(product.Description));
+            }
+
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            using (SqlCommand cmd = new SqlCommand("dbo.InsertNewProductWithSpec", conn))
+            using (DataTable dt = EntityToDataTable.GetDataTable<Specification>(product.Spec))
+            {
+                dt.Locale = CultureInfo.InvariantCulture;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@categoryId", product.CategoryId);
+                cmd.Parameters.AddWithValue("@name", product.Name);
+                cmd.Parameters.AddWithValue("@description", product.Description);
+                SqlParameter specification = cmd.Parameters.AddWithValue("@specification", dt);
+                specification.TypeName = "dbo.Specification";
+                conn.Open();
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+
+        /// <summary>
+        /// Gets the specification meta data by base category identifier.
+        /// </summary>
+        /// <param name="baseCategoryId">The base category identifier.</param>
+        /// <returns>IEnumerable&lt;System.String&gt;.</returns>
+        public IEnumerable<string> GetSpecificationMetadataByBaseCategoryId(int baseCategoryId)
+        {
+            IEnumerable<string> specifications = null;
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            using (SqlCommand cmd = new SqlCommand("dbo.SelectSpecByBaseCategoryId", conn))
+            using (DataTable specs = new DataTable())
+            {
+                specs.Locale = CultureInfo.InvariantCulture;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@baseCategoryId", baseCategoryId);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(specs);
+                }
+
+                specifications = specs.AsEnumerable().Select(s => s.Field<string>("Name")).ToList();
+            }
+
+            return specifications;
         }
     }
 }

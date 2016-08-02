@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>EcommerceDataLayer</name>
+  </assembly>
+  <members>
+    <member name="" />
+    <member name="N:EcommerceDataLayer" />
+    <member name="M:EcommerceDataLayer.EcommerceDataAccess.#ctor(System.String)"> <summary>
+ Initializes a new instance of the <see cref="T:EcommerceDataLayer.EcommerceDataAccess"/> class.
+ </summary>
+ <param name="connectionString">The connection string.</param></member>
+  </members>
+</doc>

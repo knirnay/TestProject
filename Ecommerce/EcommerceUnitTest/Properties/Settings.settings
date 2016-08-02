@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EcommerceWebServiceRootUri" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://win-jvtgjeqb9v7/EcommerceWebService/</Value>
+      <Value Profile="(Default)">http://localhost/EcommerceWebService/</Value>
     </Setting>
   </Settings>
 </SettingsFile>

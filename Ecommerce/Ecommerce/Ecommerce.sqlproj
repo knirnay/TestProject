@@ -46,6 +46,7 @@
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
@@ -61,6 +62,8 @@
     <Folder Include="SchemaObject\Tables" />
     <Folder Include="Post" />
     <Folder Include="SchemaObject\Stored Procedures" />
+    <Folder Include="SchemaObject\Types" />
+    <Folder Include="SchemaObject\Types\User-Defined Table Types" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="SchemaObject\Tables\ProductCategory.sql" />
@@ -68,10 +71,17 @@
     <Build Include="SchemaObject\Stored Procedures\SelectProductCategoryByCategoryId.sql" />
     <Build Include="SchemaObject\Stored Procedures\SelectProductCategoryByParentCategoryId.sql" />
     <Build Include="SchemaObject\Tables\Specification.sql" />
+    <Build Include="SchemaObject\Tables\SpecificationProductXref.sql" />
+    <Build Include="SchemaObject\Tables\SpecificationProductCategoryXref.sql" />
+    <Build Include="SchemaObject\Stored Procedures\InsertNewProductWithSpec.sql" />
+    <Build Include="SchemaObject\Types\User-Defined Table Types\Specification.sql" />
+    <Build Include="SchemaObject\Stored Procedures\SelectSpecByBaseCategoryId.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="Post\ProductCategory.sql" />
-    <None Include="Post\Script.PostDeployment1.sql" />
+    <None Include="Post\ProductCategory.sql" />
+    <PostDeploy Include="Post\Script.PostDeployment1.sql" />
+    <None Include="Post\Specification.sql" />
+    <None Include="Post\SpecificationProductCategoryXref.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deployment.cmd">

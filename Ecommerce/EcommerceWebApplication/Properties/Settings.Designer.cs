@@ -25,7 +25,7 @@ namespace EcommerceWebApplication.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://win-jvtgjeqb9v7/EcommerceWebService/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost/EcommerceWebService/")]
         public string EcommerceWebServiceRootUri {
             get {
                 return ((string)(this["EcommerceWebServiceRootUri"]));

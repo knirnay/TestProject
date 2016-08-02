@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using EcommerceDataLayer;
+using System.Globalization;
 
 namespace EcommerceWebServiceProxy
 {
@@ -24,10 +25,10 @@ namespace EcommerceWebServiceProxy
         private string rootUrl;
 
         /// <summary>
-        /// Gets the product category.
+        /// Gets the product category by parent category identifier.
         /// </summary>
         /// <param name="parentCategoryId">The parent category identifier.</param>
-        /// <returns></returns>
+        /// <returns>Task&lt;IEnumerable&lt;ProductCategory&gt;&gt;.</returns>
         /// <exception cref="HttpRequestException"></exception>
         public async Task<IEnumerable<ProductCategory>> GetProductCategoryByParentCategoryId(int? parentCategoryId)
         {
@@ -36,11 +37,65 @@ namespace EcommerceWebServiceProxy
                 client.BaseAddress = new Uri(this.rootUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                using (HttpResponseMessage response = await client.GetAsync(string.Format("api/Ecommerce/GetProductCategoryByParentCategoryId?parentCategoryId={0}", parentCategoryId)))
+                using (HttpResponseMessage response = await client.GetAsync(string.Format(CultureInfo.InvariantCulture, "api/Ecommerce/GetProductCategoryByParentCategoryId?parentCategoryId={0}", parentCategoryId)))
                 {
                     if (response.IsSuccessStatusCode)
                     {
                         return await response.Content.ReadAsAsync<IEnumerable<ProductCategory>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates the new product with specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        /// <exception cref="HttpRequestException"></exception>
+        public async Task<int> CreateNewProductWithSpecification(Product product)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.rootUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (HttpResponseMessage response = await client.PostAsJsonAsync("api/Ecommerce/CreateNewProductWithSpecification", product))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<int>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the specification meta data by base category identifier.
+        /// </summary>
+        /// <param name="baseCategoryId">The base category identifier.</param>
+        /// <returns>Task&lt;IEnumerable&lt;System.String&gt;&gt;.</returns>
+        /// <exception cref="HttpRequestException"></exception>
+        public async Task<IEnumerable<string>> GetSpecificationMetadataByBaseCategoryId(int baseCategoryId)
+        { 
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.rootUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (HttpResponseMessage response = await client.GetAsync(string.Format(CultureInfo.InvariantCulture, "api/Ecommerce/GetSpecificationMetaDataByBaseCategoryId?baseCategoryId={0}", baseCategoryId)))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<IEnumerable<string>>();
                     }
                     else
                     {

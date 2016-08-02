@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using EcommerceWebServiceProxy;
 using EcommerceWebApplication.Properties;
+using EcommerceDataLayer;
 
 namespace EcommerceWebApplication.App_Start
 {
@@ -40,6 +41,7 @@ namespace EcommerceWebApplication.App_Start
             // TODO: Register your types here
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IProxy, EcommerceProxy>(new HierarchicalLifetimeManager(), new InjectionConstructor(Settings.Default.EcommerceWebServiceRootUri));
+            container.RegisterType<Product, Product>(new HierarchicalLifetimeManager());
         }
     }
 }

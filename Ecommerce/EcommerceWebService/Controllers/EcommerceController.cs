@@ -34,7 +34,43 @@ namespace EcommerceWebService.Controllers
         {
             try
             {
-                return data.GetProductCategoryByParentCategoryId(parentCategoryId);
+                return this.data.GetProductCategoryByParentCategoryId(parentCategoryId);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
+            }
+        }
+
+        /// <summary>
+        /// Creates the new product with specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <returns>System.Int32.</returns>
+        /// <exception cref="HttpResponseException"></exception>
+        public int CreateNewProductWithSpecification(Product product)
+        {
+            try
+            {
+                return this.data.CreateNewProductWithSpecification(product);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
+            }
+        }
+
+        /// <summary>
+        /// Gets the specification meta data by base category identifier.
+        /// </summary>
+        /// <param name="baseCategoryId">The base category identifier.</param>
+        /// <returns>IEnumerable&lt;System.String&gt;.</returns>
+        /// <exception cref="HttpResponseException"></exception>
+        public IEnumerable<string> GetSpecificationMetadataByBaseCategoryId(int baseCategoryId)
+        {
+            try
+            {
+                return this.data.GetSpecificationMetadataByBaseCategoryId(baseCategoryId);
             }
             catch (Exception ex)
             {

@@ -1,0 +1,19 @@
+﻿@using EcommerceDataLayer
+@model IEnumerable<Specification>
+@if (Model != null)
+{
+    foreach (Specification spec in Model)
+    {
+        <div class="form-group">
+            @Html.Label(spec.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("SpecValue", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    }
+}
+
+<!--Note: We must add this css file to have uniform style of the partial view with the main view.-->
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />

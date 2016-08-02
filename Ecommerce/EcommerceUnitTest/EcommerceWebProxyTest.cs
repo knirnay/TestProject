@@ -5,6 +5,7 @@ using EcommerceUnitTest.Properties;
 using EcommerceDataLayer;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace EcommerceUnitTest
 {
@@ -24,7 +25,17 @@ namespace EcommerceUnitTest
             IEnumerable<ProductCategory> productCategories = this.proxy.GetProductCategoryByParentCategoryId(null).Result;
             foreach (ProductCategory productCategory in productCategories)
             {
-                Trace.WriteLine(string.Format("CategoryId: {0}, Name: {1}, ParentCategoryId:{2}, HasChild: {3}", productCategory.CategoryId, productCategory.Name, productCategory.ParentCategoryId, productCategory.HasChild));
+                Trace.WriteLine(string.Format(CultureInfo.InvariantCulture, "CategoryId: {0}, Name: {1}, ParentCategoryId:{2}, HasChild: {3}", productCategory.CategoryId, productCategory.Name, productCategory.ParentCategoryId, productCategory.HasChild));
+            }
+        }
+
+        [TestMethod]
+        public void GetSpecificationMetadataByBaseCategoryId()
+        {
+            IEnumerable<string> specifications = this.proxy.GetSpecificationMetadataByBaseCategoryId(1).Result;
+            foreach(string specification in specifications)
+            {
+                Trace.WriteLine(specification);
             }
         }
     }
