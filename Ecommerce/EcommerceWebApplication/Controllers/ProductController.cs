@@ -24,7 +24,7 @@ namespace EcommerceWebApplication.Controllers
         /// <summary>
         /// The proxy
         /// </summary>
-        private EcommerceProxy proxy;
+        private IProxy proxy;
 
         /// <summary>
         /// The product
