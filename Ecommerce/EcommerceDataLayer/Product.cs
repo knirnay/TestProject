@@ -19,7 +19,7 @@ namespace EcommerceDataLayer
         [Required]
         public string Description { get; set; }
 
-        public List<Specification> Spec { get; set; }
+        public List<Specification> Specs { get; set; }
 
         public IEnumerable<ProductCategory> ProductCategories { get; set; }
     }

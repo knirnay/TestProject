@@ -52,7 +52,7 @@ namespace EcommerceWebApplication.Controllers
         public async Task<ActionResult> CreateNewProduct(Product product)
         {
             int productId = await this.proxy.CreateNewProductWithSpecification(product);
-            return View();
+            return RedirectToAction("CreateNewProduct");
         }
 
         /// <summary>
@@ -71,15 +71,15 @@ namespace EcommerceWebApplication.Controllers
         public async Task<ActionResult> SpecificationPartialView(int baseCategoryId)
         {
             IEnumerable<string> specifications = await this.proxy.GetSpecificationMetadataByBaseCategoryId(baseCategoryId);
-            this.productField.Spec = new List<Specification>();
+            this.productField.Specs = new List<Specification>();
             foreach (string specification in specifications)
             {
                 Specification spec = new Specification();
                 spec.Name = specification;
-                this.productField.Spec.Add(spec);
+                this.productField.Specs.Add(spec);
             }
 
-            return PartialView(this.productField.Spec);
+            return PartialView(this.productField.Specs);
         }
     }
 }

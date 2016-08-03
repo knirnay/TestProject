@@ -38,5 +38,19 @@ namespace EcommerceUnitTest
                 Trace.WriteLine(specification);
             }
         }
+
+        [TestMethod]
+        public void CreateNewProduct()
+        {
+            Product product = new Product();
+            product.Name = "Test-Computer";
+            product.CategoryId = 10;
+            product.Description = "Test product has no description.";
+            product.Specs = new List<Specification>();
+            product.Specs.Add(new Specification { Name = "Battery Type", SpecValue = "Lithium Polymer (LiPo)" });
+            product.Specs.Add(new Specification { Name = "Brand Name", SpecValue = "Apple" });
+            int productId = this.proxy.CreateNewProductWithSpecification(product).Result;
+            Trace.WriteLine(productId);
+        }
     }
 }

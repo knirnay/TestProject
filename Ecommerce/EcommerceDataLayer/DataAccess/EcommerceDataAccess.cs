@@ -146,11 +146,6 @@ namespace EcommerceDataLayer
                 throw new ArgumentNullException(nameof(product.Description), "Value cannot be null.");
             }
 
-            if (product.Spec == null)
-            {
-                throw new ArgumentNullException(nameof(product.Spec), "Value cannot be null");
-            }
-
             if (string.IsNullOrWhiteSpace(product.Name))
             {
                 throw new ArgumentException("Value cannot be whitespace", nameof(product.Name));
@@ -163,7 +158,7 @@ namespace EcommerceDataLayer
 
             using (SqlConnection conn = new SqlConnection(this.connString))
             using (SqlCommand cmd = new SqlCommand("dbo.InsertNewProductWithSpec", conn))
-            using (DataTable dt = EntityToDataTable.GetDataTable<Specification>(product.Spec))
+            using (DataTable dt = EntityToDataTable.GetDataTable<Specification>(product.Specs))
             {
                 dt.Locale = CultureInfo.InvariantCulture;
                 cmd.CommandType = CommandType.StoredProcedure;

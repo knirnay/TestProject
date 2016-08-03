@@ -32,7 +32,7 @@ BEGIN
 			THROW 50001, 'Product name already exists', 1
 		END
 
-		IF EXISTS (SELECT 1 FROM dbo.Specification AS SPEC WHERE NOT EXISTS (SELECT 1 FROM @specification AS S WHERE S.Name = SPEC.Name))
+		IF NOT EXISTS (SELECT 1 FROM dbo.Specification AS SPEC WHERE EXISTS (SELECT 1 FROM @specification AS S WHERE S.Name = SPEC.Name))
 		BEGIN;
 			THROW 50001, 'Specification does not exists', 1
 		END
