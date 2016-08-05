@@ -197,5 +197,67 @@ namespace EcommerceDataLayer
 
             return specifications;
         }
+
+        /// <summary>
+        /// Gets the produts.
+        /// </summary>
+        /// <returns>IEnumerable&lt;Product&gt;.</returns>
+        public IEnumerable<Product> GetProducts()
+        {
+            IEnumerable<Product> products = null;
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            using (SqlCommand cmd = new SqlCommand("dbo.SelectProduct", conn))
+            using (DataTable productsDataTable = new DataTable())
+            {
+                productsDataTable.Locale = CultureInfo.InvariantCulture;
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(productsDataTable);
+                }
+
+                products = productsDataTable.AsEnumerable().Select(row =>
+                new Product
+                {
+                    Name = row.Field<string>("Name"),
+                    Description = row.Field<string>("ProductDescription"),
+                    ProductId = row.Field<int>("ProductId"),
+                    CategoryId = row.Field<int>("CategoryId")
+                }).ToList();
+            }
+
+            return products;
+        }
+
+        /// <summary>
+        /// Gets the spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>IEnumerable&lt;Specification&gt;.</returns>
+        public IEnumerable<Specification> GetSpecByProductId(int productId)
+        {
+            IEnumerable<Specification> specs = null;
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            using (SqlCommand cmd = new SqlCommand("dbo.SelectSpecByProductId", conn))
+            using (DataTable specsDataTable = new DataTable())
+            {
+                specsDataTable.Locale = CultureInfo.InvariantCulture;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@productId", productId);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(specsDataTable);
+                }
+
+                specs = specsDataTable.AsEnumerable().Select(row =>
+                new Specification
+                {
+                    Name = row.Field<string>("Name"),
+                    SpecValue = row.Field<string>("SpecValue")
+                }).ToList();
+            }
+
+            return specs;
+        }
     }
 }

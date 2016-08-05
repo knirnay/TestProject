@@ -77,5 +77,40 @@ namespace EcommerceWebService.Controllers
                 throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
             }
         }
+
+        /// <summary>
+        /// Gets the products.
+        /// </summary>
+        /// <returns>IEnumerable&lt;Product&gt;.</returns>
+        /// <exception cref="HttpResponseException"></exception>
+        public IEnumerable<Product> GetProducts()
+        {
+            try
+            {
+                return this.data.GetProducts();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
+            }
+        }
+
+        /// <summary>
+        /// Gets the spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>IEnumerable&lt;Specification&gt;.</returns>
+        /// <exception cref="HttpResponseException"></exception>
+        public IEnumerable<Specification> GetSpecByProductId(int productId)
+        {
+            try
+            {
+                return this.data.GetSpecByProductId(productId);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
+            }
+        }
     }
 }

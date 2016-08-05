@@ -6,7 +6,7 @@
     for (int i = 0; i < Model.Count(); i++)
     {
         <div class="form-group">
-            @Html.TextBox(string.Format(CultureInfo.InvariantCulture, "Specs[{0}].Name", i), Model[i].Name, new {@class = "control-label col-md-2", @readonly = "readonly", @style="border:none; background-color:#fff; background:transparent; font-weight:bold" })
+            @Html.TextArea(string.Format(CultureInfo.InvariantCulture, "Specs[{0}].Name", i), Model[i].Name, new {@class = "control-label col-md-2", @readonly = "readonly", @style="border:none; background-color:#fff; background:transparent; font-weight:bold;" })
             <div class="col-md-10">
                 @Html.Editor(string.Format(CultureInfo.InvariantCulture, "Specs[{0}].SpecValue", i), new { htmlAttributes = new { @class = "form-control" } })
             </div>

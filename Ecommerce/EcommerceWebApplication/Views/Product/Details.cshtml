@@ -1,0 +1,29 @@
+﻿@using EcommerceDataLayer
+@model IEnumerable<Specification>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Specification</h4>
+    <hr />
+    @foreach (Specification spec in Model)
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @spec.Name
+            </dt>
+
+            <dd>
+                @spec.SpecValue
+            </dd>
+        </dl>
+    }
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Get")
+</p>

@@ -29,5 +29,18 @@ namespace EcommerceWebServiceProxy
         /// <param name="baseCategoryId">The base category identifier.</param>
         /// <returns>Task&lt;IEnumerable&lt;System.String&gt;&gt;.</returns>
         Task<IEnumerable<string>> GetSpecificationMetadataByBaseCategoryId(int baseCategoryId);
+
+        /// <summary>
+        /// Gets the products.
+        /// </summary>
+        /// <returns>Task&lt;IEnumerable&lt;Product&gt;&gt;.</returns>
+        Task<IEnumerable<Product>> GetProducts();
+
+        /// <summary>
+        /// Gets the specs by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task&lt;IEnumerable&lt;Specification&gt;&gt;.</returns>
+        Task<IEnumerable<Specification>> GetSpecsByProductId(int productId);
     }
 }

@@ -31,5 +31,18 @@ namespace EcommerceDataLayer
         /// <param name="baseCategoryId">The base category identifier.</param>
         /// <returns>IEnumerable&lt;System.String&gt;.</returns>
         IEnumerable<string> GetSpecificationMetadataByBaseCategoryId(int baseCategoryId);
+
+        /// <summary>
+        /// Gets the produts.
+        /// </summary>
+        /// <returns>IEnumerable&lt;Product&gt;.</returns>
+        IEnumerable<Product> GetProducts();
+
+        /// <summary>
+        /// Gets the spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>IEnumerable&lt;Specification&gt;.</returns>
+        IEnumerable<Specification> GetSpecByProductId(int productId);
     }
 }

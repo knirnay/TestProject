@@ -164,8 +164,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Ecommerce\ProductCategory.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Product\CreateNewProduct.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Product\SpecificationPartialView.cshtml" />
+    <Content Include="Views\Product\Get.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -46,7 +46,7 @@ BEGIN
 			OUTPUT INSERTED.ProductId INTO @Product(ProductId)
 			VALUES (@name, @categoryId, @description)
 
-			INSERT INTO dbo.SpecificationProductXref(SpecId, ProductId, SpecValue)
+			INSERT INTO dbo.ProductSpecificationXref(SpecId, ProductId, SpecValue)
 			SELECT SPEC.SpecId, P.ProductId, S.SpecValue FROM @specification AS S INNER JOIN dbo.Specification AS SPEC ON S.Name = SPEC.Name CROSS APPLY @Product AS P
 			WHERE S.SpecValue IS NOT NULL
 		COMMIT

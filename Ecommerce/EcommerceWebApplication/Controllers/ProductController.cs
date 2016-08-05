@@ -36,7 +36,7 @@ namespace EcommerceWebApplication.Controllers
         /// </summary>
         /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpGet]
-        public async Task<ActionResult> CreateNewProduct()
+        public async Task<ActionResult> Create()
         {
             this.productField = new Product();
             this.productField.ProductCategories = await this.proxy.GetProductCategoryByParentCategoryId(null);
@@ -49,10 +49,10 @@ namespace EcommerceWebApplication.Controllers
         /// <param name="product">The product.</param>
         /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
-        public async Task<ActionResult> CreateNewProduct(Product product)
+        public async Task<ActionResult> Create(Product product)
         {
             int productId = await this.proxy.CreateNewProductWithSpecification(product);
-            return RedirectToAction("CreateNewProduct");
+            return RedirectToAction("Create");
         }
 
         /// <summary>
@@ -68,6 +68,11 @@ namespace EcommerceWebApplication.Controllers
             return Json(new SelectList(productCategories, "CategoryId", "Name"), JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Specifications the partial view.
+        /// </summary>
+        /// <param name="baseCategoryId">The base category identifier.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         public async Task<ActionResult> SpecificationPartialView(int baseCategoryId)
         {
             IEnumerable<string> specifications = await this.proxy.GetSpecificationMetadataByBaseCategoryId(baseCategoryId);
@@ -80,6 +85,27 @@ namespace EcommerceWebApplication.Controllers
             }
 
             return PartialView(this.productField.Specs);
+        }
+
+        /// <summary>
+        /// Gets this instance.
+        /// </summary>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
+        public async Task<ActionResult> Get()
+        {
+            IEnumerable<Product> products = await this.proxy.GetProducts();
+            return View(products);
+        }
+
+        /// <summary>
+        /// Details of the specified identifier.
+        /// </summary>
+        /// <param name="Id">The identifier.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
+        public async Task<ActionResult> Details(int Id)
+        {
+            IEnumerable<Specification> specs = await this.proxy.GetSpecsByProductId(Id);
+            return View(specs);
         }
     }
 }

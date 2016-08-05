@@ -71,11 +71,13 @@
     <Build Include="SchemaObject\Stored Procedures\SelectProductCategoryByCategoryId.sql" />
     <Build Include="SchemaObject\Stored Procedures\SelectProductCategoryByParentCategoryId.sql" />
     <Build Include="SchemaObject\Tables\Specification.sql" />
-    <Build Include="SchemaObject\Tables\SpecificationProductXref.sql" />
+    <Build Include="SchemaObject\Tables\ProductSpecificationXref.sql" />
     <Build Include="SchemaObject\Tables\SpecificationProductCategoryXref.sql" />
     <Build Include="SchemaObject\Stored Procedures\InsertNewProductWithSpec.sql" />
     <Build Include="SchemaObject\Types\User-Defined Table Types\Specification.sql" />
     <Build Include="SchemaObject\Stored Procedures\SelectSpecByBaseCategoryId.sql" />
+    <Build Include="SchemaObject\Stored Procedures\SelectProduct.sql" />
+    <Build Include="SchemaObject\Stored Procedures\SelectSpecByProductId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Post\ProductCategory.sql" />

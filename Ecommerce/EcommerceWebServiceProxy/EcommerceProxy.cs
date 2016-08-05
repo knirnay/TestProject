@@ -104,5 +104,58 @@ namespace EcommerceWebServiceProxy
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the products.
+        /// </summary>
+        /// <returns>Task&lt;IEnumerable&lt;Product&gt;&gt;.</returns>
+        /// <exception cref="HttpRequestException"></exception>
+        public async Task<IEnumerable<Product>> GetProducts()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.rootUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (HttpResponseMessage response = await client.GetAsync("api/Ecommerce/GetProducts"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<IEnumerable<Product>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the specs by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task&lt;IEnumerable&lt;Specification&gt;&gt;.</returns>
+        /// <exception cref="HttpRequestException"></exception>
+        public async Task<IEnumerable<Specification>> GetSpecsByProductId(int productId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.rootUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (HttpResponseMessage response = await client.GetAsync(string.Format(CultureInfo.InvariantCulture, "api/Ecommerce/GetSpecByProductId?productId={0}", productId)))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<IEnumerable<Specification>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+        }
     }
 }
