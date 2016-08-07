@@ -139,16 +139,58 @@ namespace EcommerceWebApplication.Controllers
             return View(this.productField);
         }
 
+        /// <summary>
+        /// Edits the specified product.
+        /// If we pass in Product as a parameter we have a problem with unintended updates. 
+        /// i.e. Even though we have made the Name field display which can't be edited. 
+        /// We can do so using Fiddler which is demonstrated here: 
+        /// https://www.youtube.com/watch?v=T__S4GmQsYs&list=PL6n9fhu94yhVm6S8I2xd6nYz2ZORd7X2v&index=19 
+        /// & 
+        /// https://www.youtube.com/watch?v=kfBvS-VOZFw&list=PL6n9fhu94yhVm6S8I2xd6nYz2ZORd7X2v&index=20 
+        /// To avoid doing so we need to use UpdateModel or TryUpateModel function to bind the model and use BlackList (Exclude List) Or WhiteList (Include List). 
+        /// The example here uses Exclude List. It is just a different overload of the UpdateModel/TryUpateModel function.
+        /// </summary>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
-        public async Task<ActionResult> Edit(Product product)
+        [ActionName("Edit")]
+        public async Task<ActionResult> EditPost(int id)
         {
+            Product product = await proxy.GetProductSpecByProductId(id);
+            /*
+             * Below line uses so called BlackList (exclude properties) for update model. It simply means that Name property will be excluded from the model binding.
+             * If we would have used WhiteList (include properties), it would only include the mentioned property for model binding. 
+             * Note: Please notice first line of this method. In which we are fetching the product back from DB and there is reason for that.
+             * We have decorated our property Name in the Product class with Required attribute and in TryUpdateModel method we are black listing the Name that means
+             * we are telling our code not to include Name property in binding the model, hence when the user post the request it won't find the Name property and 
+             * throws error that it required.
+             */
+            TryUpdateModel(product, null, null, new string[] { "Name" });
+            if (product.Name == null)
+            {
+                Response.Write("Product name is null.<br/>");
+            }
+
             if (ModelState.IsValid)
             {
                 await this.proxy.SetProductSpecification(product);
                 return RedirectToAction("Details", new { id = product.ProductId });
             }
 
-            return RedirectToAction("Edit", new { id = product.ProductId });
+            /*
+             * If there is any error while validating model state the above if statement gets false for ModelState.IsValid and the view won't get updated. 
+             * We still want to retain the same view for the users so, that they can correct the mistake and post the form back. 
+             * While doing so we will have ProductCategories property null since it is used to render the drop-down box and remember, 
+             * we never really bind the whole list of product categories instead we only bind the selected value for the categoryId from the drop-down box, 
+             * hence we are in a need to fetch back the ProductCategories just like we have done in the Get method for Edit. 
+             */
+            if (product.ProductCategories == null)
+            {
+                IEnumerable<ProductCategory> productCategories = await this.proxy.GetProductCategoryByCategoryId(product.CategoryId);
+                int? parentCategoryId = productCategories.FirstOrDefault().ParentCategoryId;
+                product.ProductCategories = await this.proxy.GetProductCategoryByParentCategoryId(parentCategoryId);
+            }
+
+            return View(product);
         }
     }
 }

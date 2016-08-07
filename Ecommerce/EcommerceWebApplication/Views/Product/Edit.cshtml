@@ -29,7 +29,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                <!--
+                    We have made the following editor readonly so, the user cannot change the name of the product.
+                -->
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -41,6 +44,9 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
+        <!--
+            Let's load the partial view here by passing Specification list to it.
+        -->
         @Html.Partial("SpecificationPartialView", Model.Specs)
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
