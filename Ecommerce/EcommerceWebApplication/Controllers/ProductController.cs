@@ -45,14 +45,29 @@ namespace EcommerceWebApplication.Controllers
 
         /// <summary>
         /// Creates the new product.
+        /// Note: We can change the method signature by removing input parameter product and using UpdateModel or TryUpdateModel function.
+        /// It updates the specified model instance using values from the controller's current value provider. It also inspects all the 
+        /// HttpRequest inputs such as posted Form data, QueryString, Cookies and Server variables and populate the object.
+        /// Product product = new Product();
+        /// UpdateModel(product);
+        /// Above two lines explains how can we use UpdateModel function and remove the input parameter of the Create method.
+        /// The TryUpdateModel method is like the UpdateModel method except that the TryUpdateModel method does not throw an 
+        /// InvalidOperationException exception if the updated model state is not valid.
         /// </summary>
         /// <param name="product">The product.</param>
         /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         public async Task<ActionResult> Create(Product product)
         {
-            int productId = await this.proxy.CreateNewProductWithSpecification(product);
-            return RedirectToAction("Create");
+            //// Check if there are any model binding validation errors. So, if there are some errors in validating model state we
+            //// want to give a user an opportunity to correct those errors by keeping them in the same view.
+            if (ModelState.IsValid)
+            {
+                int productId = await this.proxy.CreateNewProductWithSpecification(product);
+                return RedirectToAction("Details", new { id = productId });
+            }
+
+            return View();
         }
 
         /// <summary>
@@ -100,12 +115,40 @@ namespace EcommerceWebApplication.Controllers
         /// <summary>
         /// Details of the specified identifier.
         /// </summary>
-        /// <param name="Id">The identifier.</param>
+        /// <param name="id">The identifier.</param>
         /// <returns>Task&lt;ActionResult&gt;.</returns>
-        public async Task<ActionResult> Details(int Id)
+        public async Task<ActionResult> Details(int id)
         {
-            IEnumerable<Specification> specs = await this.proxy.GetSpecsByProductId(Id);
-            return View(specs);
+            Product product = await this.proxy.GetProductSpecByProductId(id);
+            return View(product);
+        }
+
+        /// <summary>
+        /// Edits the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
+        [HttpGet]
+        public async Task<ActionResult> Edit(int id)
+        {
+            this.productField = await this.proxy.GetProductSpecByProductId(id);
+            IEnumerable<ProductCategory> productCategories = await this.proxy.GetProductCategoryByCategoryId(this.productField.CategoryId);
+            int? parentCategoryId = productCategories.FirstOrDefault().ParentCategoryId;
+            this.productField.ProductCategories = await this.proxy.GetProductCategoryByParentCategoryId(parentCategoryId);
+            
+            return View(this.productField);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                await this.proxy.SetProductSpecification(product);
+                return RedirectToAction("Details", new { id = product.ProductId });
+            }
+
+            return RedirectToAction("Edit", new { id = product.ProductId });
         }
     }
 }

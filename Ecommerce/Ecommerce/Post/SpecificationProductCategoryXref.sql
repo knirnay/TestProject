@@ -17,7 +17,6 @@ BEGIN
 				  , ((SELECT SpecId FROM dbo.Specification WHERE Name = 'Brand Name'), (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))
 				  , ((SELECT SpecId FROM dbo.Specification WHERE Name = 'Series'), (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))
 				  , ((SELECT SpecId FROM dbo.Specification WHERE Name = 'Item Model Number'), (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))
-				  , ((SELECT SpecId FROM dbo.Specification WHERE Name = 'Hardware Plateform'), (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))
 				  , ((SELECT SpecId FROM dbo.Specification WHERE Name = 'Operating System'), (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))
 				  , ((SELECT SpecId FROM dbo.Specification WHERE Name = 'Weight'), (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))
 				  , ((SELECT SpecId FROM dbo.Specification WHERE Name = 'Product Dimensions'), (SELECT CategoryId FROM dbo.ProductCategory WHERE Name = 'Electronics & Computers'))

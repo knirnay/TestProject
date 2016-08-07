@@ -2,7 +2,7 @@
 (
 	ProductId INT NOT NULL,
 	SpecId INT NOT NULL,
-	SpecValue VARCHAR(100) NOT NULL,
+	SpecValue VARCHAR(100) NULL,
 	InsertDate DATETIME CONSTRAINT [DF_ProductSpecificationXref_InsertDate] DEFAULT (GETUTCDATE()) NOT NULL,
 	UpdateDate DATETIME NULL,
 	CONSTRAINT [PK_ProductSpecificationXref_ProductId_SpecId] PRIMARY KEY CLUSTERED (ProductId ASC, SpecId ASC),

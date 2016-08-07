@@ -44,5 +44,18 @@ namespace EcommerceDataLayer
         /// <param name="productId">The product identifier.</param>
         /// <returns>IEnumerable&lt;Specification&gt;.</returns>
         IEnumerable<Specification> GetSpecByProductId(int productId);
+
+        /// <summary>
+        /// Sets the product specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        void SetProductSpecification(Product product);
+
+        /// <summary>
+        /// Gets the product spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Product.</returns>
+        Product GetProductSpecByProductId(int productId);
     }
 }

@@ -42,5 +42,25 @@ namespace EcommerceWebServiceProxy
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;IEnumerable&lt;Specification&gt;&gt;.</returns>
         Task<IEnumerable<Specification>> GetSpecsByProductId(int productId);
+
+        /// <summary>
+        /// Sets the product specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <returns>Task.</returns>
+        Task SetProductSpecification(Product product);
+
+        /// <summary>
+        /// Gets the product spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task&lt;Product&gt;.</returns>
+        Task<Product> GetProductSpecByProductId(int productId);
+        /// <summary>
+        /// Gets the product category by category identifier.
+        /// </summary>
+        /// <param name="categoryId">The category identifier.</param>
+        /// <returns>Task&lt;IEnumerable&lt;ProductCategory&gt;&gt;.</returns>
+        Task<IEnumerable<ProductCategory>> GetProductCategoryByCategoryId(int categoryId);
     }
 }

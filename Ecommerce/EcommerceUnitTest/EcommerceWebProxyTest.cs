@@ -52,5 +52,50 @@ namespace EcommerceUnitTest
             int productId = this.proxy.CreateNewProductWithSpecification(product).Result;
             Trace.WriteLine(productId);
         }
+
+        [TestMethod]
+        public void GetProducts()
+        {
+            IEnumerable<Product> products = this.proxy.GetProducts().Result;
+            foreach(Product product in products)
+            {
+                Trace.Write(string.Format(CultureInfo.InvariantCulture, "CategoryId: {0} Name: {1} Description: {2}", product.CategoryId, product.Name, product.Description));
+                Trace.Write(Environment.NewLine);
+                foreach(Specification specification in product.Specs)
+                {
+                    Trace.Write(string.Format(CultureInfo.InvariantCulture, "\tName: {0} SpecValue: {1}", specification.Name, specification.SpecValue));
+                    Trace.Write(Environment.NewLine);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetSpecsByProductId()
+        {
+            IEnumerable<Specification> specs = this.proxy.GetSpecsByProductId(1).Result;
+            foreach(Specification specification in specs)
+            {
+                Trace.Write(string.Format(CultureInfo.InvariantCulture, "Name: {0} SpceValue: {1}", specification.Name, specification.SpecValue));
+            }
+        }
+
+        [TestMethod]
+        public void SetProductSpecification()
+        {
+
+        }
+
+        [TestMethod]
+        public void GetProductSpecByProductId()
+        {
+            Product product = this.proxy.GetProductSpecByProductId(1).Result;
+            Trace.Write(string.Format(CultureInfo.InvariantCulture, "CategoryId: {0} Name: {1} Description: {2}", product.CategoryId, product.Name, product.Description));
+            Trace.Write(Environment.NewLine);
+            foreach(Specification specification in product.Specs)
+            {
+                Trace.Write(string.Format(CultureInfo.InvariantCulture, "\tName: {0} SpecValue: {1}", specification.Name, specification.SpecValue));
+                Trace.Write(Environment.NewLine);
+            }
+        }
     }
 }

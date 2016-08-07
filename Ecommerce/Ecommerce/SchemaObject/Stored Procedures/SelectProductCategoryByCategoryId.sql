@@ -17,7 +17,7 @@ BEGIN
 		CategoryId, 
 		Name, 
 		ParentCategoryId, 
-		CASE WHEN EXISTS (SELECT 1 FROM dbo.ProductCategory AS P WHERE P.ParentCategoryId = PC.CategoryId AND P.ParentCategoryId IS NOT NULL) THEN 1 ELSE 0 END AS HasChild
+		CASE WHEN EXISTS (SELECT 1 FROM dbo.ProductCategory AS P WHERE ISNULL(P.ParentCategoryId, -1) = PC.CategoryId) THEN 1 ELSE 0 END AS HasChild
 	FROM dbo.ProductCategory AS PC
 	WHERE 
 		PC.CategoryId = @categoryId

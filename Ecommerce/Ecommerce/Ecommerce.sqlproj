@@ -78,6 +78,8 @@
     <Build Include="SchemaObject\Stored Procedures\SelectSpecByBaseCategoryId.sql" />
     <Build Include="SchemaObject\Stored Procedures\SelectProduct.sql" />
     <Build Include="SchemaObject\Stored Procedures\SelectSpecByProductId.sql" />
+    <Build Include="SchemaObject\Stored Procedures\UpdateProductSpecification.sql" />
+    <Build Include="SchemaObject\Stored Procedures\SelectProductByProductId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Post\ProductCategory.sql" />

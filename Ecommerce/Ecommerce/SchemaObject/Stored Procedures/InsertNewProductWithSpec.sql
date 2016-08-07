@@ -48,7 +48,6 @@ BEGIN
 
 			INSERT INTO dbo.ProductSpecificationXref(SpecId, ProductId, SpecValue)
 			SELECT SPEC.SpecId, P.ProductId, S.SpecValue FROM @specification AS S INNER JOIN dbo.Specification AS SPEC ON S.Name = SPEC.Name CROSS APPLY @Product AS P
-			WHERE S.SpecValue IS NOT NULL
 		COMMIT
 
 		SELECT ProductId FROM @Product;
@@ -60,21 +59,20 @@ BEGIN
 			ROLLBACK TRAN
 		END
 
-		DECLARE @MESSAGE           NVARCHAR(1000)	= ERROR_MESSAGE()
-		DECLARE @CURRENT_TIME      DATETIME			= GETDATE()
-		DECLARE @PROC              NVARCHAR(128)	= ERROR_PROCEDURE()
-		DECLARE @LINE_NUMBER       INT				= ERROR_LINE()
-		DECLARE @ERROR_SEVERITY    INT				= ERROR_SEVERITY()
-		DECLARE @STATE             INT				= ERROR_STATE()
-		DECLARE @ERROR             INT				= ERROR_NUMBER()
+		DECLARE @message		NVARCHAR(1000)		= ERROR_MESSAGE()
+		DECLARE @currentTime	DATETIME			= GETDATE()
+		DECLARE @proc			NVARCHAR(128)		= ERROR_PROCEDURE()
+		DECLARE @lineNumber		INT					= ERROR_LINE()
+		DECLARE @errorSeverity	INT					= ERROR_SEVERITY()
+		DECLARE @state			INT					= ERROR_STATE()
+		DECLARE @error			INT					= ERROR_NUMBER()
 
-		DECLARE @ERROR_MESSAGE    NVARCHAR(4000)
-
-		SELECT  @ERROR_MESSAGE = 'Module: ' + @PROC + ', Line: ' + RTRIM(LTRIM(STR(@LINE_NUMBER))) + ', ' + @MESSAGE + ', Current time: ' + CONVERT(NVARCHAR(27),@CURRENT_TIME,121);
+		DECLARE @errorMessage	NVARCHAR(4000)
 		
-		RAISERROR(@ERROR_MESSAGE, @ERROR_SEVERITY, @STATE) WITH LOG;
-
-		THROW @ERROR, @ERROR_MESSAGE, @STATE;
-
+		SELECT @errorMessage = 'Module: ' + @proc + ', Line: ' + RTRIM(LTRIM(STR(@lineNumber))) + ', ' + @message + ', Current time: ' + CONVERT(NVARCHAR(27), @currentTime, 121);
+		
+		RAISERROR(@errorMessage, @errorSeverity, @state) WITH LOG;
+		
+		THROW @error, @errorMessage, @state;
 	END CATCH
 END

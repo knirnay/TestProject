@@ -17,7 +17,6 @@ BEGIN
 				, ('Brand Name')
 				, ('Series')
 				, ('Item Model Number')
-				, ('Hardware Plateform')
 				, ('Operating System')
 				, ('Weight')
 				, ('Product Dimensions')

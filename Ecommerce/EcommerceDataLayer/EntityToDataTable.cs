@@ -11,7 +11,14 @@ namespace EcommerceDataLayer
 {
     public static class EntityToDataTable
     {
-        public static DataTable GetDataTable<T>(IEnumerable<T> list)
+        /// <summary>
+        /// Gets the data table.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list">The list.</param>
+        /// <returns>DataTable.</returns>
+        /// <exception cref="ArgumentNullException">Value cannot be null.</exception>
+        public static DataTable ToDataTable<T>(this IEnumerable<T> list)
         {
             if (list == null)
             {
@@ -25,6 +32,7 @@ namespace EcommerceDataLayer
             dt.Locale = CultureInfo.InvariantCulture;
             foreach(PropertyInfo property in properties)
             {
+                //// Name of the property and the name of the column will be same.
                 dt.Columns.Add(property.Name, property.PropertyType);
             }
 

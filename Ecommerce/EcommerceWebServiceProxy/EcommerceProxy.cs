@@ -157,5 +157,76 @@ namespace EcommerceWebServiceProxy
                 }
             }
         }
+
+        /// <summary>
+        /// Sets the product specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <returns>Task.</returns>
+        /// <exception cref="HttpRequestException"></exception>
+        public async Task SetProductSpecification(Product product)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.rootUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (HttpResponseMessage response = await client.PutAsJsonAsync("api/Ecommerce/SetProductSpecification", product))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the product spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task&lt;Product&gt;.</returns>
+        /// <exception cref="HttpRequestException"></exception>
+        public async Task<Product> GetProductSpecByProductId(int productId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.rootUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (HttpResponseMessage response = await client.GetAsync(string.Format(CultureInfo.InvariantCulture, "api/Ecommerce/GetProductSpecByProductId?productId={0}", productId)))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<Product>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+        }
+
+        public async Task<IEnumerable<ProductCategory>> GetProductCategoryByCategoryId(int categoryId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.rootUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (HttpResponseMessage response = await client.GetAsync(string.Format(CultureInfo.InvariantCulture, "api/Ecommerce/GetProductCategoryByCategoryId?categoryId={0}", categoryId)))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<IEnumerable<ProductCategory>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+        }
     }
 }

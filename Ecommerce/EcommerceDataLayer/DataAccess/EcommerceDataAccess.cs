@@ -158,7 +158,7 @@ namespace EcommerceDataLayer
 
             using (SqlConnection conn = new SqlConnection(this.connString))
             using (SqlCommand cmd = new SqlCommand("dbo.InsertNewProductWithSpec", conn))
-            using (DataTable dt = EntityToDataTable.GetDataTable<Specification>(product.Specs))
+            using (DataTable dt = product.Specs.ToDataTable<Specification>())
             {
                 dt.Locale = CultureInfo.InvariantCulture;
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -258,6 +258,93 @@ namespace EcommerceDataLayer
             }
 
             return specs;
+        }
+
+        /// <summary>
+        /// Sets the product specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Value cannot be null.
+        /// or
+        /// Value cannot be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">Value cannot be whitespace</exception>
+        public void SetProductSpecification(Product product)
+        {
+            if (product == null)
+            {
+                throw new ArgumentNullException(nameof(product), "Value cannot be null.");
+            }
+
+            if (product.Description == null)
+            {
+                throw new ArgumentNullException(nameof(product.Description), "Value cannot be null.");
+            }
+
+            if (product.Name == null)
+            {
+                throw new ArgumentNullException(nameof(product.Name), "Value cannot be null.");
+            }
+
+            if (string.IsNullOrWhiteSpace(product.Name))
+            {
+                throw new ArgumentException("Value cannot be whitespace.", nameof(product.Name));
+            }
+
+            if (string.IsNullOrWhiteSpace(product.Description))
+            {
+                throw new ArgumentException("Value cannot be whitespace", nameof(product.Description));
+            }
+
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            using (SqlCommand cmd = new SqlCommand("dbo.UpdateProductSpecification", conn))
+            using (DataTable spec = product.Specs.ToDataTable<Specification>())
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@productId", product.ProductId);
+                cmd.Parameters.AddWithValue("@name", product.Name);
+                cmd.Parameters.AddWithValue("@categoryId", product.CategoryId);
+                cmd.Parameters.AddWithValue("@productDescription", product.Description);
+                SqlParameter specification = cmd.Parameters.AddWithValue("@specification", spec);
+                specification.TypeName = "dbo.Specification";
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Gets the product spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Product.</returns>
+        public Product GetProductSpecByProductId(int productId)
+        {
+            Product product = null;
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            using (SqlCommand cmd = new SqlCommand("dbo.SelectProductByProductId", conn))
+            using (DataTable dt = new DataTable())
+            {
+                dt.Locale = CultureInfo.InvariantCulture;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@productId", productId);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+
+                product = dt.AsEnumerable().Select(row =>
+                new Product
+                {
+                    ProductId = productId,
+                    CategoryId = row.Field<int>("CategoryId"),
+                    Name = row.Field<string>("Name"),
+                    Description = row.Field<string>("ProductDescription")
+                }).ToList().First();
+            }
+
+            product.Specs = this.GetSpecByProductId(productId).ToList();
+            return product;
         }
     }
 }

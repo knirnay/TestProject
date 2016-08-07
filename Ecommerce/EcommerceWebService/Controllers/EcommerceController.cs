@@ -30,6 +30,7 @@ namespace EcommerceWebService.Controllers
         /// <param name="parentCategoryId">The parent category identifier.</param>
         /// <returns></returns>
         /// <exception cref="HttpResponseException"></exception>
+        [HttpGet]
         public IEnumerable<ProductCategory> GetProductCategoryByParentCategoryId(int? parentCategoryId)
         {
             try
@@ -48,6 +49,7 @@ namespace EcommerceWebService.Controllers
         /// <param name="product">The product.</param>
         /// <returns>System.Int32.</returns>
         /// <exception cref="HttpResponseException"></exception>
+        [HttpPost]
         public int CreateNewProductWithSpecification(Product product)
         {
             try
@@ -66,6 +68,7 @@ namespace EcommerceWebService.Controllers
         /// <param name="baseCategoryId">The base category identifier.</param>
         /// <returns>IEnumerable&lt;System.String&gt;.</returns>
         /// <exception cref="HttpResponseException"></exception>
+        [HttpGet]
         public IEnumerable<string> GetSpecificationMetadataByBaseCategoryId(int baseCategoryId)
         {
             try
@@ -83,6 +86,7 @@ namespace EcommerceWebService.Controllers
         /// </summary>
         /// <returns>IEnumerable&lt;Product&gt;.</returns>
         /// <exception cref="HttpResponseException"></exception>
+        [HttpGet]
         public IEnumerable<Product> GetProducts()
         {
             try
@@ -101,11 +105,68 @@ namespace EcommerceWebService.Controllers
         /// <param name="productId">The product identifier.</param>
         /// <returns>IEnumerable&lt;Specification&gt;.</returns>
         /// <exception cref="HttpResponseException"></exception>
+        [HttpGet]
         public IEnumerable<Specification> GetSpecByProductId(int productId)
         {
             try
             {
                 return this.data.GetSpecByProductId(productId);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
+            }
+        }
+
+        /// <summary>
+        /// Sets the product specification.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <exception cref="HttpResponseException"></exception>
+        [HttpPut]
+        public void SetProductSpecification(Product product)
+        {
+            try
+            {
+                this.data.SetProductSpecification(product);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
+            }
+        }
+
+        /// <summary>
+        /// Gets the product spec by product identifier.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Product.</returns>
+        /// <exception cref="HttpResponseException"></exception>
+        [HttpGet]
+        public Product GetProductSpecByProductId(int productId)
+        {
+            try
+            {
+                return this.data.GetProductSpecByProductId(productId);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex));
+            }
+        }
+
+        /// <summary>
+        /// Gets the product category by category identifier.
+        /// </summary>
+        /// <param name="categoryId">The category identifier.</param>
+        /// <returns>IEnumerable&lt;ProductCategory&gt;.</returns>
+        /// <exception cref="HttpResponseException"></exception>
+        [HttpGet]
+        public IEnumerable<ProductCategory> GetProductCategoryByCategoryId(int categoryId)
+        {
+            try
+            {
+                return this.data.GetProductCategoryByCategoryId(categoryId);
             }
             catch (Exception ex)
             {

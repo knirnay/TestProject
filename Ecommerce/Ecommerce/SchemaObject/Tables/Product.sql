@@ -10,4 +10,4 @@
 	CONSTRAINT [FK_Product_ProductCategory_CategoryId] FOREIGN KEY (CategoryId) REFERENCES dbo.ProductCategory(CategoryId) ON UPDATE CASCADE ON DELETE CASCADE
 )
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [UIX_Product_Name] ON dbo.Product(Name ASC)
+CREATE NONCLUSTERED INDEX [UIX_Product_Name] ON dbo.Product(Name ASC)
